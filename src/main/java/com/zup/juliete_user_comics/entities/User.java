@@ -1,7 +1,6 @@
 package com.zup.juliete_user_comics.entities;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -16,15 +15,13 @@ import javax.validation.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 @Entity
 @Table(name="tb_user", uniqueConstraints = {@UniqueConstraint(columnNames = "email"),@UniqueConstraint(columnNames = "CPF")})
 public class User implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	//atributos básicos
+	//atributos básicos com as restrições para o BD
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -42,9 +39,10 @@ public class User implements Serializable{
     @Column(unique = true, nullable = false)
 	private String CPF;
 	
+	//@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	//@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	@NotBlank(message = "Data de nascimento é obrigatório!")
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "GMT")
-	private Instant birthDate;
+	private String birthDate;
 	
 	public User() {
 		
@@ -53,7 +51,7 @@ public class User implements Serializable{
 	public User(Long id, @NotBlank(message = "Nome é obrigatório!") String name,
 			@NotBlank(message = "E-mail é obrigatório!") @Email(message = "E-mail Inválido!") String email,
 			@NotBlank(message = "CPF é obrigatório!") @org.hibernate.validator.constraints.br.CPF(message = "Invalid CPF") String cPF,
-			@NotBlank(message = "Data de nascimento é obrigatório!") Instant birthDate) {
+			@NotBlank(message = "Data de nascimento é obrigatório!") String birthDate) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -94,16 +92,12 @@ public class User implements Serializable{
 		CPF = cPF;
 	}
 
-	public Instant getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Instant birthDate) {
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 	@Override
