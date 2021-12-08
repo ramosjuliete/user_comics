@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.zup.juliete_user_comics.View;
 import com.zup.juliete_user_comics.entities.User;
 import com.zup.juliete_user_comics.services.UserService;
 
@@ -28,6 +30,7 @@ public class UserResource {
 	
 	//EndPoint tipo GET para buscar todos os usuários
 	@GetMapping
+	@JsonView(View.Base.class)
 	public ResponseEntity<List<User>> findAll(){
 		List<User> list = service.findAll();
 		return ResponseEntity.ok().body(list);

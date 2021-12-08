@@ -16,6 +16,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.zup.juliete_user_comics.View;
 
 @Entity
 @Table(name="tb_user", uniqueConstraints = {@UniqueConstraint(columnNames = "email"),@UniqueConstraint(columnNames = "CPF")})
@@ -26,19 +28,24 @@ public class User implements Serializable{
 	//atributos básicos com as restrições para o BD
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(View.Base.class)
 	private Long id;
 	
+	@JsonView(View.Base.class)
 	@NotEmpty(message="{name.not.blank}")
 	private String name;
 	
+	@JsonView(View.Base.class)
 	@NotEmpty(message="{email.not.blank}")
 	@Email(message="{email.not.valid}")
 	private String email;
 	
+	@JsonView(View.Base.class)
 	@NotEmpty(message="{CPF.not.blank}")
 	@org.hibernate.validator.constraints.br.CPF(message="{CPF.not.valid}")
 	private String CPF;
 	
+	@JsonView(View.Base.class)
 	@NotEmpty(message="{birthDate.not.blank}")
 	private String birthDate;
 	
@@ -46,9 +53,6 @@ public class User implements Serializable{
 	@ManyToMany(mappedBy = "users")
 	private Set<Comic> comics = new HashSet<>();
 	
-	
-	
-
 	public User() {
 		
 	}

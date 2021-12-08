@@ -19,36 +19,39 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="tb_comic", uniqueConstraints = {@UniqueConstraint(columnNames = "IBSN")})
-public class Comic implements Serializable{
-	
+@Table(name = "tb_comic", uniqueConstraints = { @UniqueConstraint(columnNames = "IBSN") })
+public class Comic implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // por enquanto deixar como auto-incremento
 	private Long comicId;
-	
+
 	@NotEmpty(message = "Nome é obrigatório!")
 	private String title;
-	
-	//@NotBlank(message = "Preço é obrigatório!") {pesquisar como é para verificar atributo Double}
+
+	// @NotBlank(message = "Preço é obrigatório!") {pesquisar como é para verificar
+	// atributo Double}
 	private Double price;
-	
+
 	@NotEmpty(message = "Autores são obrigatórios!")
 	private String autors;
-	
+
 	@NotEmpty(message = "IBSN é obrigatório!")
 	private String IBSN;
-	
+
 	private String description;
-	
+
 	@JsonIgnore
 	@ManyToMany
-	@JoinTable(name = "tb_comic_user", joinColumns = @JoinColumn(name="comic_id"), inverseJoinColumns = @JoinColumn(name="user_id"))
+	@JoinTable(name = "tb_comic_user", joinColumns = @JoinColumn(name = "comic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> users = new HashSet<>();
-	
+
+	private boolean active_discount = false;
+
 	public Comic() {
-		
+
 	}
 
 	public Comic(Long comicId, @NotEmpty(message = "Nome é obrigatório!") String title, Double price,
@@ -110,9 +113,17 @@ public class Comic implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public Set<User> getUsers() {
 		return users;
+	}
+
+	public boolean isActive_discount() {
+		return active_discount;
+	}
+
+	public void setActive_discount(boolean active_discount) {
+		this.active_discount = active_discount;
 	}
 
 	@Override
@@ -131,5 +142,50 @@ public class Comic implements Serializable{
 		Comic other = (Comic) obj;
 		return Objects.equals(comicId, other.comicId);
 	}
-	
+
+	public Comic calculateDiscount(String day, Comic c) {
+
+		switch (day) {
+		case "SEG":
+			if (c.getIBSN().endsWith("0") || c.getIBSN().endsWith("1")) {
+				c.setPrice(c.getPrice() * 0.1);
+				c.setActive_discount(true);
+				return c;
+			}
+			break;
+		case "TER":
+			if (c.getIBSN().endsWith("2") || c.getIBSN().endsWith("3")) {
+				c.setPrice(c.getPrice() * 0.1);
+				c.setActive_discount(true);
+				return c;
+			}
+			break;
+		case "QUA":
+			if (c.getIBSN().endsWith("4") || c.getIBSN().endsWith("5")) {
+				c.setPrice(c.getPrice() * 0.1);
+				c.setActive_discount(true);
+				return c;
+			}
+			break;
+		case "QUI":
+			if (c.getIBSN().endsWith("6") || c.getIBSN().endsWith("7")) {
+				c.setPrice(c.getPrice() * 0.1);
+				c.setActive_discount(true);
+				return c;
+			}
+			break;
+		case "SEX":
+			if (c.getIBSN().endsWith("8") || c.getIBSN().endsWith("9")) {
+				c.setPrice(c.getPrice() * 0.1);
+				c.setActive_discount(true);
+				return c;
+			}
+			break;
+		default:
+			return c;
+		}
+
+		return c;
+	}
+
 }
