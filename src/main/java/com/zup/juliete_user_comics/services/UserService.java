@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.zup.juliete_user_comics.entities.User;
 import com.zup.juliete_user_comics.repositories.UserRepository;
+import com.zup.juliete_user_comics.services.exceptions.ResourceNotFoundException;
 
 @Service //registrando como Serviço do spring
-
 public class UserService {
 	
+	//injentando dependencia para objeto do tipo UserRepository
 	@Autowired
 	private UserRepository repository;
 	
@@ -22,7 +23,11 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> u = repository.findById(id);
-		return u.get();
+		return u.orElseThrow(()-> new ResourceNotFoundException(id));
+	}
+	
+	public User insert(User u) {
+		return repository.save(u);
 	}
 	
 }

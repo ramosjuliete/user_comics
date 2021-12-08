@@ -1,19 +1,21 @@
 package com.zup.juliete_user_comics.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.br.CPF;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="tb_user", uniqueConstraints = {@UniqueConstraint(columnNames = "email"),@UniqueConstraint(columnNames = "CPF")})
@@ -26,32 +28,35 @@ public class User implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank(message = "Nome é obrigatório!")
+	@NotEmpty(message="{name.not.blank}")
 	private String name;
 	
-	@NotBlank(message = "E-mail é obrigatório!")
-	@Email(message = "E-mail Inválido!")
-    @Column(unique = true, nullable = false)
+	@NotEmpty(message="{email.not.blank}")
+	@Email(message="{email.not.valid}")
 	private String email;
 	
-	@NotBlank(message = "CPF é obrigatório!")
-	@CPF(message = "Invalid CPF")
-    @Column(unique = true, nullable = false)
+	@NotEmpty(message="{CPF.not.blank}")
+	@org.hibernate.validator.constraints.br.CPF(message="{CPF.not.valid}")
 	private String CPF;
 	
-	//@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
-	//@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
-	@NotBlank(message = "Data de nascimento é obrigatório!")
+	@NotEmpty(message="{birthDate.not.blank}")
 	private String birthDate;
 	
+	//associação entre usuário e quadrinhos
+	@ManyToMany(mappedBy = "users")
+	private Set<Comic> comics = new HashSet<>();
+	
+	
+	
+
 	public User() {
 		
 	}
 
-	public User(Long id, @NotBlank(message = "Nome é obrigatório!") String name,
-			@NotBlank(message = "E-mail é obrigatório!") @Email(message = "E-mail Inválido!") String email,
-			@NotBlank(message = "CPF é obrigatório!") @org.hibernate.validator.constraints.br.CPF(message = "Invalid CPF") String cPF,
-			@NotBlank(message = "Data de nascimento é obrigatório!") String birthDate) {
+	public User(Long id, @NotEmpty(message = "{name.not.blank}") String name,
+			@NotEmpty(message = "{email.not.blank}") @Email(message = "{email.not.valid}") String email,
+			@NotEmpty(message = "{CPF.not.blank}") String cPF,
+			@NotEmpty(message = "{birthDate.not.blank}") String birthDate) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -59,6 +64,8 @@ public class User implements Serializable{
 		CPF = cPF;
 		this.birthDate = birthDate;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -99,7 +106,11 @@ public class User implements Serializable{
 	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
-
+	
+	public Set<Comic> getComics() {
+		return comics;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -116,4 +127,5 @@ public class User implements Serializable{
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
+
 }
