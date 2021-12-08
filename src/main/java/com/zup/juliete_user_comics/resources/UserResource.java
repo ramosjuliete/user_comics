@@ -24,11 +24,9 @@ import com.zup.juliete_user_comics.services.UserService;
 @RequestMapping(value="/users")
 public class UserResource {
 	
-	//injentando dependencia para objeto do tipo UserService
 	@Autowired
 	private UserService service;
 	
-	//EndPoint tipo GET para buscar todos os usuários
 	@GetMapping
 	@JsonView(View.Base.class)
 	public ResponseEntity<List<User>> findAll(){
@@ -36,14 +34,12 @@ public class UserResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	//EndPoint tipo GET para buscar usuário por id
 	@GetMapping(value="/{id}")
 	public ResponseEntity<User> findById(@PathVariable Long id){
 		User u = service.findById(id);
 		return ResponseEntity.ok().body(u);
 	}
 	
-	//EndPoint tipo Post para inserir usuário no BD
 	@PostMapping
 	public ResponseEntity<User> insert(@Valid @RequestBody User u){
 		u = service.insert(u);

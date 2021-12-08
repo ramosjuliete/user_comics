@@ -26,8 +26,52 @@ public class ComicService {
 		return u.get();
 	}
 	
-	public Comic insert(Comic c, Long iduser) {
+	public Comic insert(Comic c) {
 		return repository.save(c);
 	}
 	
+	public Comic calculateDiscount(String day, Comic c) {
+
+		switch (day) {
+		case "SEG":
+			if (c.getIBSN().endsWith("0") || c.getIBSN().endsWith("1")) {
+				c.setPrice(c.getPrice() * 0.1);
+				c.setActive_discount(true);
+				return c;
+			}
+			break;
+		case "TER":
+			if (c.getIBSN().endsWith("2") || c.getIBSN().endsWith("3")) {
+				c.setPrice(c.getPrice() * 0.1);
+				c.setActive_discount(true);
+				return c;
+			}
+			break;
+		case "QUA":
+			if (c.getIBSN().endsWith("4") || c.getIBSN().endsWith("5")) {
+				c.setPrice(c.getPrice() * 0.1);
+				c.setActive_discount(true);
+				return c;
+			}
+			break;
+		case "QUI":
+			if (c.getIBSN().endsWith("6") || c.getIBSN().endsWith("7")) {
+				c.setPrice(c.getPrice() * 0.1);
+				c.setActive_discount(true);
+				return c;
+			}
+			break;
+		case "SEX":
+			if (c.getIBSN().endsWith("8") || c.getIBSN().endsWith("9")) {
+				c.setPrice(c.getPrice() * 0.1);
+				c.setActive_discount(true);
+				return c;
+			}
+			break;
+		default:
+			return c;
+		}
+
+		return c;
+	}	
 }

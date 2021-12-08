@@ -1,5 +1,6 @@
 package com.zup.juliete_user_comics.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.zup.juliete_user_comics.entities.Comic;
 import com.zup.juliete_user_comics.services.ComicService;
@@ -19,34 +21,33 @@ import com.zup.juliete_user_comics.services.UserService;
 @RequestMapping(value="/comics")
 public class ComicResource {
 	
-	//injentando dependencia para objeto do tipo ComicService
 	@Autowired
 	private ComicService serviceComic;
 	
-	@Autowired
-	private UserService serviceUser;
-		
-	//EndPoint tipo GET para buscar todos os Comics
 	@GetMapping
 	public ResponseEntity<List<Comic>> findAll(){
 		List<Comic> list = serviceComic.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
-	//EndPoint tipo GET para buscar comic por id
-	@GetMapping(value="/{id}/dia/{day}")
-	public ResponseEntity<Comic> findById(@PathVariable Long id,@PathVariable String day){
+	@GetMapping(value="/{id}")
+	public ResponseEntity<Comic> findById(@PathVariable Long id){
 		Comic c = serviceComic.findById(id);
-		c = c.calculateDiscount(day, c);
 		return ResponseEntity.ok().body(c);
 	}
 	
-	//EndPoint do tipo POST do Comic, deve-se passar o comic e o usuário ??? 
-	@PostMapping(value="/{iduser}")
-	public ResponseEntity<Comic> insert(@RequestBody Comic c, Long iduser){
-		//User u = findUserById(iduser);
-		//c.getUsers().add(u);
+	@GetMapping(value="/{id}/dia/{day}")
+	public ResponseEntity<Comic> findById(@PathVariable Long id,@PathVariable String day){
+		Comic c = serviceComic.findById(id);
+		c = serviceComic.calculateDiscount(day, c);
 		return ResponseEntity.ok().body(c);
+	}
+	 
+	@PostMapping
+	public ResponseEntity<Comic> insert(@RequestBody Comic c){
+		c = serviceComic.insert(c);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(c.getComicId()).toUri();
+		return ResponseEntity.created(uri).body(c);
 	}
 
 	/*@GetMapping(value="/{iduser}")

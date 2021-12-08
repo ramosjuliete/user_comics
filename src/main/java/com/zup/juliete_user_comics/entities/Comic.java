@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,30 +26,25 @@ public class Comic implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) // por enquanto deixar como auto-incremento
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //
 	private Long comicId;
-
 	@NotEmpty(message = "Nome é obrigatório!")
 	private String title;
-
-	// @NotBlank(message = "Preço é obrigatório!") {pesquisar como é para verificar
-	// atributo Double}
+	@NotNull
 	private Double price;
-
 	@NotEmpty(message = "Autores são obrigatórios!")
 	private String autors;
-
 	@NotEmpty(message = "IBSN é obrigatório!")
 	private String IBSN;
-
 	private String description;
-
+	private boolean active_discount = false;
+	
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "tb_comic_user", joinColumns = @JoinColumn(name = "comic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> users = new HashSet<>();
 
-	private boolean active_discount = false;
+	
 
 	public Comic() {
 
@@ -142,50 +138,4 @@ public class Comic implements Serializable {
 		Comic other = (Comic) obj;
 		return Objects.equals(comicId, other.comicId);
 	}
-
-	public Comic calculateDiscount(String day, Comic c) {
-
-		switch (day) {
-		case "SEG":
-			if (c.getIBSN().endsWith("0") || c.getIBSN().endsWith("1")) {
-				c.setPrice(c.getPrice() * 0.1);
-				c.setActive_discount(true);
-				return c;
-			}
-			break;
-		case "TER":
-			if (c.getIBSN().endsWith("2") || c.getIBSN().endsWith("3")) {
-				c.setPrice(c.getPrice() * 0.1);
-				c.setActive_discount(true);
-				return c;
-			}
-			break;
-		case "QUA":
-			if (c.getIBSN().endsWith("4") || c.getIBSN().endsWith("5")) {
-				c.setPrice(c.getPrice() * 0.1);
-				c.setActive_discount(true);
-				return c;
-			}
-			break;
-		case "QUI":
-			if (c.getIBSN().endsWith("6") || c.getIBSN().endsWith("7")) {
-				c.setPrice(c.getPrice() * 0.1);
-				c.setActive_discount(true);
-				return c;
-			}
-			break;
-		case "SEX":
-			if (c.getIBSN().endsWith("8") || c.getIBSN().endsWith("9")) {
-				c.setPrice(c.getPrice() * 0.1);
-				c.setActive_discount(true);
-				return c;
-			}
-			break;
-		default:
-			return c;
-		}
-
-		return c;
-	}
-
 }

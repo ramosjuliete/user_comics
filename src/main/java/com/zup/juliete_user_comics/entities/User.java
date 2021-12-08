@@ -15,7 +15,6 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.zup.juliete_user_comics.View;
 
@@ -25,30 +24,24 @@ public class User implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	//atributos básicos com as restrições para o BD
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonView(View.Base.class)
 	private Long id;
-	
 	@JsonView(View.Base.class)
-	@NotEmpty(message="{name.not.blank}")
+	@NotEmpty(message="{O nome não pode ser vazio!}")
 	private String name;
-	
 	@JsonView(View.Base.class)
-	@NotEmpty(message="{email.not.blank}")
-	@Email(message="{email.not.valid}")
+	@NotEmpty(message="{O e-mail não pode ser vazio!}")
+	@Email(message="{O e-mail precisa ser válido!}")
 	private String email;
-	
 	@JsonView(View.Base.class)
-	@NotEmpty(message="{CPF.not.blank}")
-	@org.hibernate.validator.constraints.br.CPF(message="{CPF.not.valid}")
+	@NotEmpty(message="{O CPF não pode ser vazio!}")
+	@org.hibernate.validator.constraints.br.CPF(message="{O CPF precisa ser válido!}")
 	private String CPF;
-	
 	@JsonView(View.Base.class)
-	@NotEmpty(message="{birthDate.not.blank}")
+	@NotEmpty(message="{A data de aniversário não pode ser vazio!}")
 	private String birthDate;
-	
 	//associação entre usuário e quadrinhos
 	@ManyToMany(mappedBy = "users")
 	private Set<Comic> comics = new HashSet<>();
