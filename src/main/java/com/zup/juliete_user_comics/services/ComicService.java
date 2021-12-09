@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 import com.zup.juliete_user_comics.entities.Comic;
 import com.zup.juliete_user_comics.entities.User;
 import com.zup.juliete_user_comics.repositories.ComicRepository;
+import com.zup.juliete_user_comics.services.exceptions.ResourceNotFoundException;
 
-@Service //registrando como Serviço do spring
+@Service 
 public class ComicService {
-	
-	//injentando dependencia para objeto do tipo ComicRepository
 	@Autowired
 	private ComicRepository repository;
 	
@@ -22,8 +21,8 @@ public class ComicService {
 	}
 	
 	public Comic findById(Long id) {
-		Optional<Comic> u = repository.findById(id);
-		return u.get();
+		Optional<Comic> c = repository.findById(id);
+		return c.orElseThrow(()-> new ResourceNotFoundException(id));
 	}
 	
 	public Comic insert(Comic c) {
@@ -31,7 +30,6 @@ public class ComicService {
 	}
 	
 	public Comic calculateDiscount(String day, Comic c) {
-
 		switch (day) {
 		case "SEG":
 			if (c.getIBSN().endsWith("0") || c.getIBSN().endsWith("1")) {
@@ -71,7 +69,6 @@ public class ComicService {
 		default:
 			return c;
 		}
-
 		return c;
 	}	
 }

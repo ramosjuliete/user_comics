@@ -41,7 +41,8 @@ public class Comic implements Serializable {
 	
 	@JsonIgnore
 	@ManyToMany
-	@JoinTable(name = "tb_comic_user", joinColumns = @JoinColumn(name = "comic_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@JoinTable(name = "tb_comic_user", joinColumns = @JoinColumn(name = "comic_id"), 
+	inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> users = new HashSet<>();
 
 	

@@ -42,7 +42,7 @@ public class User implements Serializable{
 	@JsonView(View.Base.class)
 	@NotEmpty(message="{A data de aniversário não pode ser vazio!}")
 	private String birthDate;
-	//associação entre usuário e quadrinhos
+	
 	@ManyToMany(mappedBy = "users")
 	private Set<Comic> comics = new HashSet<>();
 	

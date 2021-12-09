@@ -10,10 +10,9 @@ import com.zup.juliete_user_comics.entities.User;
 import com.zup.juliete_user_comics.repositories.UserRepository;
 import com.zup.juliete_user_comics.services.exceptions.ResourceNotFoundException;
 
-@Service //registrando como Serviço do spring
+@Service 
 public class UserService {
-	
-	//injentando dependencia para objeto do tipo UserRepository
+
 	@Autowired
 	private UserRepository repository;
 	
