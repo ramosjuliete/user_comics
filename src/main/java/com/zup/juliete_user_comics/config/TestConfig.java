@@ -29,21 +29,13 @@ public class TestConfig implements CommandLineRunner{
 		userRepository.saveAll(Arrays.asList(u1,u2));
 		
 		
-		Comic c1 = new Comic(null, "Exemplo 1", 90.5, "Juliete, Marianna", "XXXXXXXX1", "Descricao 1");
-		Comic c2 = new Comic(null, "Exemplo 2", 40.5, "Romerson,Juliete", "XXXXXXXX3", "Descricao 2");
-		Comic c3 = new Comic(null, "Exemplo 3", 100.25, "Marianna,Romerson", "XXXXXXXX5", "Descricao 3");
-		Comic c4 = new Comic(null, "Exemplo 4", 200.5, "Lufs,Marianna", "XXXXXXXX7", "Descricao 4");
-		Comic c5 = new Comic(null, "Exemplo 5", 31.5, "Juliete, Romerson", "XXXXXXXX9", "Descricao 5");
+		Comic c1 = new Comic(null, "Exemplo Comic 1", 90.5, "Autor 1", "XXXXXXXX1", "Descricao 1");
+		Comic c2 = new Comic(null, "Exemplo Comic 2", 40.5, "Autor 2", "XXXXXXXX3", "Descricao 2");
+		Comic c3 = new Comic(null, "Exemplo Comic 3", 100.25, "Autor 3", "XXXXXXXX5", "Descricao 3");
+		Comic c4 = new Comic(null, "Exemplo Comic 4", 200.5, "Autor 4", "XXXXXXXX7", "Descricao 4");
+		Comic c5 = new Comic(null, "Exemplo Comic 5", 31.5, "Autor 5", "XXXXXXXX9", "Descricao 5");
 		
 		comicRepository.saveAll(Arrays.asList(c1,c2,c3,c4,c5));
-		/*
-		u1.getComics().add(c1);
-		u1.getComics().add(c2);
-		u2.getComics().add(c3);
-		u2.getComics().add(c3);
-		u2.getComics().add(c4);
-		u2.getComics().add(c5);
-		*/
 		
 		c1.getUsers().add(u1);
 		c2.getUsers().add(u1);
